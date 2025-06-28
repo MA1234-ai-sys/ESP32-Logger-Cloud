@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ESP32 Sensor Data</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial; background: #f4f4f4; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; background: white; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: center; }
+    h1 { text-align: center; }
+    a.button { padding: 8px 15px; background: #007BFF; color: white; text-decoration: none; border-radius: 4px; margin-right: 10px; }
+  </style>
+</head>
+<body>
+  <h1>ESP32 Sensor Data</h1>
+  <div style="text-align: center; margin-bottom: 20px;">
+    <a href="/graph.html" class="button">📈 View Graph</a>
+    <a href="/export/csv" class="button">📤 Export CSV</a>
+    <a href="/export/pdf" class="button">📄 Export PDF</a>
+    <a href="/logout" class="button">Logout</a>
+  </div>
+  <table id="dataTable">
+    <thead>
+      <tr><th>ID</th><th>Device</th><th>Temperature</th><th>Humidity</th><th>Timestamp</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <script>
+    fetch('/logs')
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector('#dataTable tbody');
+        data.forEach(row => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${row.id}</td><td>${row.device}</td><td>${row.temperature}</td><td>${row.humidity}</td><td>${row.timestamp}</td>`;
+          tbody.appendChild(tr);
+        });
+      });
+  </script>
+</body>
+</html>
